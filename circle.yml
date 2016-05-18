@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - docker build -t spec -f Dockerfile --no-cache .
+
+test:
+  override:
+    - docker run -it --rm spec /bin/sh -c 'cd /usr/local/provisioning && rake spec'
