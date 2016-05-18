@@ -12,3 +12,5 @@ RUN itamae local ${work_dir}/roles/ci.rb
 
 RUN rm -rf /var/cache/apk/*
 
+# FIXME: move to itamae recipe
+CMD ["nginx"]
