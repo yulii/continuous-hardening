@@ -5,6 +5,9 @@ machine:
 dependencies:
   pre:
     - docker build -t spec -f Dockerfile --no-cache .
+    - docker run --name ci -it -d spec
 test:
+  pre:
+    - docker exec -it ci /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
-    - docker run -it --rm spec /bin/sh -c 'cd /usr/local/provisioning && rake spec'
+    - docker exec -it ci /bin/sh -c 'cd /usr/local/provisioning && rake spec'
