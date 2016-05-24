@@ -8,6 +8,7 @@ dependencies:
     - docker run --name ci -it -d spec
 test:
   pre:
-    - docker exec -it ci /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
+    # - docker exec -it ci /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
+    - sudo lxc-attach -n "$(docker inspect --format '' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
-    - docker exec -it ci /bin/sh -c 'cd /usr/local/provisioning && rake spec'
+    - sudo lxc-attach -n "$(docker inspect --format '' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
