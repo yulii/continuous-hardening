@@ -6,6 +6,6 @@ end
 #   action [:enable, :start]
 # end
 
-# execute 'nginx' do
-#   command 'nginx'
-# end
+execute 'nginx' do
+  command 'nginx'
+end
