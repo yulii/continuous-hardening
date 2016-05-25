@@ -1,8 +1,10 @@
 FROM alpine
 
-RUN apk update && apk upgrade
-RUN apk add --no-cache ruby ruby-io-console ruby-json
-RUN gem install itamae rake serverspec --no-ri --no-rdoc
+RUN set -x && \
+    apk update && \
+    apk upgrade && \
+    apk add --no-cache ruby ruby-io-console ruby-json && \
+    gem install itamae rake serverspec --no-ri --no-rdoc
 
 COPY . /usr/local/provisioning
 
