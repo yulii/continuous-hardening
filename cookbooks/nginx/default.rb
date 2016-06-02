@@ -2,9 +2,9 @@ package 'nginx' do
   action :install
 end
 
-# service 'nginx' do
-#   action [:enable, :start]
-# end
+remote_file '/etc/nginx/conf.d/default.conf'
+remote_file '/etc/nginx/conf.d/secure.conf'
+template '/etc/nginx/nginx.conf'
 
 execute 'nginx' do
   command 'nginx'
