@@ -8,9 +8,9 @@ RUN set -x && \
     apk add --no-cache ruby ruby-io-console ruby-json && \
     gem install itamae rake serverspec --no-ri --no-rdoc
 
-COPY cookbooks .
-COPY roles .
-COPY serverspec/Rakefile .
-COPY serverspec/spec .
+COPY cookbooks cookbooks
+COPY roles roles
+COPY serverspec/Rakefile Rakefile
+COPY serverspec/spec spec
 
 CMD ["tail", "-f", "/dev/null"]
