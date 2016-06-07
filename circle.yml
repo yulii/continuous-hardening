@@ -6,7 +6,7 @@ dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
     - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
-    - docker run --privileged --name ci -it -d serverspec
+    - docker run --name ci -it -d serverspec
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
