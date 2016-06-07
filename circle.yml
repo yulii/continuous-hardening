@@ -5,14 +5,11 @@ machine:
 dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
-    # - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
+    - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
     - docker run --name ci -it -d serverspec
 test:
-  pre:
-    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
-    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
+    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb && rake spec'
   post:
     - docker inspect --format '{{.NetworkSettings.IPAddress}}' ci
     - docker ps
-    - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
