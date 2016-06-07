@@ -11,6 +11,7 @@ RUN set -x && \
 COPY cookbooks cookbooks
 COPY roles roles
 COPY serverspec/Rakefile Rakefile
+COPY serverspec/.rspec .rspec
 COPY serverspec/spec spec
 
 CMD ["tail", "-f", "/dev/null"]
