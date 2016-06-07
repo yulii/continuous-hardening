@@ -1,5 +1,5 @@
 describe server(:ci) do
-  describe http("http://#{ENV['TARGET_HOST']}") do
+  describe http('http://spechost') do
     it do
       expect(response.code).to eq('204')
       expect(response.headers['X-Frame-Options']).to eq('SAMEORIGIN')
