@@ -6,10 +6,11 @@ dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
     - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
-    - docker run --name ci -it -d serverspec
+    - docker network create -d bridge ci-network
+    - docker run --net=ci-network --name ci -it -d serverspec
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
-    - docker run -it --net="container:ci" --add-host spechost:$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci) infrataster
+    - docker run -it --net=ci-network --add-host spechost:$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci) infrataster
