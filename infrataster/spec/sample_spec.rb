@@ -1,10 +1,10 @@
 describe server(:ci) do
   describe http("http://#{ENV['TARGET_HOST']}") do
-    it "responds content including 'Hello Sinatra'" do
-      expect(response.body).to include('Hello Sinatra')
-    end
-    it "responds as 'text/html'" do
-      expect(response.headers['content-type']).to eq("text/html")
+    it do
+      expect(response.code).to eq('204')
+      expect(response.headers['X-Frame-Options']).to eq('SAMEORIGIN')
+      expect(response.headers['X-XSS-Protection']).to eq('1; mode=block')
+      expect(response.headers['X-Content-Type-Options']).to eq('nosniff')
     end
   end
 end
