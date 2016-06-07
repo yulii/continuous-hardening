@@ -6,7 +6,7 @@ dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
     - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
-    - docker run --net=ci-net --name ci -it -d serverspec
+    - docker run --name ci -it -d serverspec
     - export CI_IP=`sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'ip addr show eth0 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"'`
 test:
   pre:
