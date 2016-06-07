@@ -4,10 +4,12 @@ machine:
 
 dependencies:
   pre:
-    - docker build -t spec -f Dockerfile --no-cache .
-    - docker run --name ci -it -d spec
+    - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
+    - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
+    - docker run --name ci -it -d serverspec
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
+    - docker run --add-host spechost:$(sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'ip -f inet -o addr show eth0 | cut -d\  -f 7 | cut -d/ -f 1') -it infrataster
