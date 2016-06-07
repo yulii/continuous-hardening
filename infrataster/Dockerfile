@@ -11,4 +11,4 @@ RUN set -x && \
 COPY infrataster/.rspec .rspec
 COPY infrataster/spec spec
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["rspec"]

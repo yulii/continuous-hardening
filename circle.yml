@@ -12,4 +12,4 @@ test:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
-    - docker run -it -e TARGET_HOST="$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci)" infrataster rspec
+    - docker run -it -e TARGET_HOST="$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci)" infrataster
