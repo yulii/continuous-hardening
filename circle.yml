@@ -6,11 +6,12 @@ dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
     - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
-    - docker network create -d bridge ci-network
-    - docker run --net=ci-network --name ci -it -d serverspec
+    - docker run --net=ci-net --name ci -it -d serverspec
+    - export CI_IP=`sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'ip addr show eth0 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"'`
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
-    - docker run -it --net=ci-network --add-host spechost:$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci) infrataster
+    # - docker run --add-host spechost:$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci) -it infrataster
+    - docker run --add-host spechost:$CI_IP -it infrataster
