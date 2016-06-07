@@ -1,5 +1,5 @@
 describe server(:ci) do
-  describe http("http://#{$TARGET_HOST}") do
+  describe http("http://#{ENV['TARGET_HOST']}") do
     it "responds content including 'Hello Sinatra'" do
       expect(response.body).to include('Hello Sinatra')
     end

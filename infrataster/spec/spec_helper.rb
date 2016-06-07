@@ -1,6 +1,6 @@
 require 'infrataster/rspec'
 
-Infrataster::Server.define(:ci, $TARGET_HOST)
+Infrataster::Server.define(:ci, ENV['TARGET_HOST'])
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
