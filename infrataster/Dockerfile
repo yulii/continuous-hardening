@@ -6,9 +6,9 @@ RUN set -x && \
     apk update && \
     apk upgrade && \
     apk add --no-cache g++ libxml2-dev make ruby ruby-dev && \
-    gem install infrataster rake --no-ri --no-rdoc
+    gem install infrataster --no-ri --no-rdoc
 
-COPY serverspec/.rspec .rspec
-COPY serverspec/spec spec
+COPY infrataster/.rspec .rspec
+COPY infrataster/spec spec
 
 CMD ["tail", "-f", "/dev/null"]
