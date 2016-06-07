@@ -10,7 +10,7 @@ dependencies:
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
-    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'echo -en "HEAD / HTTP/1.1\nHost: localhost\n\n" | nc localhost 80'
+    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'nc localhost 80'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
     - docker run -it -e TARGET_HOST="$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci)" infrataster rspec
