@@ -6,11 +6,10 @@ dependencies:
   pre:
     - docker build -t serverspec  -f serverspec/Dockerfile  --no-cache .
     - docker build -t infrataster -f infrataster/Dockerfile --no-cache .
-    - docker run --name ci -it -d serverspec
+    - docker run --privileged --name ci -it -d serverspec
 test:
   pre:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && itamae local roles/ci.rb'
-    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'ps axu'
   override:
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' ci)" -- /bin/sh -c 'cd /usr/local/provisioning && rake spec'
     - docker run -it -e TARGET_HOST="$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ci)" infrataster rspec
