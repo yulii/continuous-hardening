@@ -5,7 +5,7 @@ WORKDIR /usr/local/provisioning
 RUN set -x && \
     apk update && \
     apk upgrade && \
-    apk add --no-cache g++ libxml2-dev make ruby ruby-dev && \
+    apk add --no-cache g++ libxml2-dev make ruby ruby-dev ruby-io-console && \
     gem install infrataster --no-ri --no-rdoc
 
 COPY infrataster/.rspec .rspec
